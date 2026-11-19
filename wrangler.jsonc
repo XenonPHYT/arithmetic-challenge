@@ -2,7 +2,7 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "arithmetic-challenge",
   "main": "worker/index.js",
-  "compatibility_date": "2025-11-01",
+  "compatibility_date": "2025-11-19",
 
   // Static files (index.html, css/, js/, python/, pyodide/, ...). Private files are excluded by .assetsignore.
   "assets": {
@@ -15,8 +15,8 @@
   // Create the D1 database and KV namespace in the Cloudflare dashboard first
   // (Storage & Databases), then paste their IDs below. Deploys fail until both are replaced.
   // Binding names (DB, SESSIONS) must stay exactly as they are; worker/index.js uses them.
-  "d1_databases": [{ "binding": "DB", "database_id": "PASTE_D1_DATABASE_ID_HERE" }],
-  "kv_namespaces": [{ "binding": "SESSIONS", "id": "PASTE_KV_NAMESPACE_ID_HERE" }],
+  "d1_databases": [{ "binding": "DB", "database_id": "9fee29ae-e73c-4d23-9ed8-266bf0357720" }],
+  "kv_namespaces": [{ "binding": "SESSIONS", "id": "67d431b3d2974367a5bf6d1847d430d8" }],
 
   "observability": { "enabled": true }
 
