@@ -1,0 +1,24 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "arithmetic-challenge",
+  "main": "worker/index.js",
+  "compatibility_date": "2025-11-01",
+
+  // Static files (index.html, css/, js/, python/, pyodide/, ...). Private files are excluded by .assetsignore.
+  "assets": {
+    "directory": "./",
+    "binding": "ASSETS",
+    // Worker handles /api/* first; everything else is served as a static file.
+    "run_worker_first": ["/api/*"]
+  },
+
+  // No IDs needed: Cloudflare creates these automatically on first deploy.
+  "d1_databases": [{ "binding": "DB" }],
+  "kv_namespaces": [{ "binding": "SESSIONS" }],
+
+  "observability": { "enabled": true }
+
+  // Secrets (set in Cloudflare dashboard > Worker > Settings > Variables and Secrets, never in GitHub):
+  //   AUTH_SECRET     - long random string, signs game sessions
+  //   PIN_KEY         - 32 random bytes as base64, encrypts recovery PINs
+}

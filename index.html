@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="ac-version" content="1.0.0">
+  <meta name="description" content="Arithmetic Challenge: race through adaptive math questions and climb the leaderboard with perfect runs.">
+  <meta name="theme-color" content="#2563eb">
+  <title>Arithmetic Challenge</title>
+  <link rel="icon" href="assets/images/logo.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/style.css?v=1.0.0">
+</head>
+<body>
+  <a class="skip" href="#view-dynamic">Skip to content</a>
+  <header class="site-header">
+    <a class="brand" href="#/" aria-label="Arithmetic Challenge home"><img src="assets/images/logo.svg" alt="" width="32" height="32"><span>Arithmetic Challenge</span></a>
+    <nav id="nav" aria-label="Main"></nav>
+  </header>
+
+  <main>
+    <section id="view-landing">
+      <div class="hero">
+        <p class="eyebrow">Fast. Fair. Perfect runs only.</p>
+        <h1>Test your mental math. Beat the clock.</h1>
+        <p class="lead">Answer a mix of addition, subtraction, multiplication and division. Get every answer right, as fast as you can, and earn your place on the leaderboard.</p>
+        <div class="actions" id="hero-actions"></div>
+        <div class="floaters" aria-hidden="true"><span>+</span><span>&minus;</span><span>&times;</span><span>&divide;</span></div>
+      </div>
+      <div class="features">
+        <article class="card"><h2>Three levels</h2><p>Easy (10 questions), Normal (15) and Hard (20). Every level mixes all four operations.</p></article>
+        <article class="card"><h2>Fair play</h2><p>The server times every run and re-checks every answer. Only perfect runs reach the leaderboard.</p></article>
+        <article class="card"><h2>Pick up anywhere</h2><p>Refresh the page and your game and timer carry on. One device per account keeps things simple.</p></article>
+      </div>
+      <div class="steps panel">
+        <h2>How it works</h2>
+        <ol>
+          <li>Create a free account and save your recovery PIN.</li>
+          <li>Pick a level. The clock starts with your first question.</li>
+          <li>Answer every question correctly to be recorded.</li>
+        </ol>
+      </div>
+    </section>
+    <div id="view-dynamic" tabindex="-1" hidden></div>
+  </main>
+
+  <footer class="site-footer"><span>Arithmetic Challenge</span></footer>
+  <div id="modal-root"></div>
+  <div id="assistant-root"></div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <noscript><p class="noscript">Arithmetic Challenge needs JavaScript to run.</p></noscript>
+
+  <script src="web.js?v=1.0.0"></script>
+  <script src="web_logic.js?v=1.0.0"></script>
+  <script src="js/game.js?v=1.0.0"></script>
+  <script src="js/assistant.js?v=1.0.0"></script>
+  <script src="js/app.js?v=1.0.0"></script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+# Revalidate everything (cheap 304s) so a deploy is never stuck behind old caches,
+# and Pyodide loader/runtime files can never end up mismatched after an upgrade.
+/*
+  Cache-Control: no-cache
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: same-origin
+  Content-Security-Policy: frame-ancestors 'none'
