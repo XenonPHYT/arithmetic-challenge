@@ -12,9 +12,11 @@
     "run_worker_first": ["/api/*"]
   },
 
-  // No IDs needed: Cloudflare creates these automatically on first deploy.
-  "d1_databases": [{ "binding": "DB" }],
-  "kv_namespaces": [{ "binding": "SESSIONS" }],
+  // Create the D1 database and KV namespace in the Cloudflare dashboard first
+  // (Storage & Databases), then paste their IDs below. Deploys fail until both are replaced.
+  // Binding names (DB, SESSIONS) must stay exactly as they are; worker/index.js uses them.
+  "d1_databases": [{ "binding": "DB", "database_id": "PASTE_D1_DATABASE_ID_HERE" }],
+  "kv_namespaces": [{ "binding": "SESSIONS", "id": "PASTE_KV_NAMESPACE_ID_HERE" }],
 
   "observability": { "enabled": true }
 
