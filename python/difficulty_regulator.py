@@ -7,6 +7,12 @@ bands, consistency with recent questions, commutative repetition and operation s
 JavaScript owns: raw-number retrieval, candidate construction, exact-duplicate tracking
 and the retry loop. The server re-checks the same score/bands (worker/index.js).
 The score formula and BANDS below MUST stay identical to worker/index.js.
+
+Learn practice (optional, never recorded): a candidate may carry "mode": "learn" and a
+"focus" skill. Learn mode keeps every rule except the operation-streak and
+difficulty-consistency checks, which make no sense inside a single-operation lesson.
+Without these fields evaluate() behaves exactly as before, so the real game and the
+server's re-check are unaffected.
 """
 import json
 
@@ -21,6 +27,19 @@ BANDS = {
     "easy":   {"add": (0, 22),  "sub": (0, 24),  "mul": (0, 25),  "div": (0, 34)},
     "normal": {"add": (23, 36), "sub": (25, 36), "mul": (26, 44), "div": (35, 44)},
     "hard":   {"add": (37, 99), "sub": (37, 99), "mul": (45, 99), "div": (45, 99)},
+}
+
+def _has_carry(a, b):
+    ones = a % 10 + b % 10
+    return ones >= 10 or (a // 10) % 10 + (b // 10) % 10 + (1 if ones >= 10 else 0) >= 10
+
+
+# Skill focus for Learn practice: name -> (operation, test(a, b, answer)).
+FOCUSES = {
+    "carry": ("add", lambda a, b, ans: _has_carry(a, b)),
+    "borrow": ("sub", lambda a, b, ans: a % 10 < b % 10),
+    "tables": ("mul", lambda a, b, ans: 2 <= a <= 12 and 2 <= b <= 12),
+    "division_facts": ("div", lambda a, b, ans: 2 <= b <= 12),
 }
 
 MAX_SPREAD = 35      # allowed distance from the average score of recent questions
@@ -136,6 +155,12 @@ def evaluate(candidate):
         return _reject("INVALID_OPERATION")
     if difficulty not in DIFFICULTIES:
         return _reject("INVALID_DIFFICULTY")
+    mode = candidate.get("mode")
+    if mode not in (None, "learn"):
+        return _reject("INVALID_MODE")
+    focus = candidate.get("focus")
+    if focus is not None and (not isinstance(focus, str) or focus not in FOCUSES):
+        return _reject("INVALID_FOCUS")
     if not (MIN_OPERAND <= a <= MAX_OPERAND and MIN_OPERAND <= b <= MAX_OPERAND):
         return _reject("OPERAND_OUT_OF_RANGE")
 
@@ -158,6 +183,10 @@ def evaluate(candidate):
 
     if is_trivial(a, op, b, answer):
         return _reject("TRIVIAL_QUESTION")
+    if focus is not None:
+        focus_op, focus_test = FOCUSES[focus]
+        if op != focus_op or not focus_test(a, b, answer):
+            return _reject("FOCUS_MISMATCH")
 
     score = score_candidate(a, op, b, answer)
     lo, hi = BANDS[difficulty][op]
@@ -168,14 +197,15 @@ def evaluate(candidate):
 
     if any(_same_question(a, op, b, r) for r in clean):
         return _reject("REPEATED_QUESTION", score=score)
-    tail = clean[-MAX_OP_STREAK:]
-    if len(tail) == MAX_OP_STREAK and all(r["op"] == op for r in tail):
-        return _reject("OPERATION_STREAK", score=score)
-    window = clean[-CONSISTENCY_WINDOW:]
-    if window:
-        mean = sum(r["score"] for r in window) / len(window)
-        if abs(score - mean) > MAX_SPREAD:
-            return _reject("INCONSISTENT_DIFFICULTY", score=score)
+    if mode != "learn":
+        tail = clean[-MAX_OP_STREAK:]
+        if len(tail) == MAX_OP_STREAK and all(r["op"] == op for r in tail):
+            return _reject("OPERATION_STREAK", score=score)
+        window = clean[-CONSISTENCY_WINDOW:]
+        if window:
+            mean = sum(r["score"] for r in window) / len(window)
+            if abs(score - mean) > MAX_SPREAD:
+                return _reject("INCONSISTENT_DIFFICULTY", score=score)
 
     return {"approved": True, "reason": "OK", "score": score, "answer": answer,
             "difficulty": difficulty}
