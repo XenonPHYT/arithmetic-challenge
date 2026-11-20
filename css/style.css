@@ -148,6 +148,19 @@ details { text-align: left; margin-top: 10px; } summary { cursor: pointer; font-
 .site-footer { text-align: center; color: var(--muted); padding: 18px; font-size: .85rem; }
 .noscript { padding: 20px; text-align: center; }
 
+/* learn */
+.learn { max-width: 680px; margin: 8px auto; }
+.learn h1 { margin-top: 0; }
+.learn.teach h2 { margin-top: 1.2em; }
+.example { background: var(--blue-xl); border-radius: 12px; padding: 12px 16px; margin: 10px 0; font-variant-numeric: tabular-nums; }
+.lesson-card { text-decoration: none; color: inherit; }
+.lesson-card.soon { opacity: .6; cursor: default; }
+.lesson-card.soon:hover { transform: none; border-color: var(--line); box-shadow: none; }
+.lesson-sym { font-size: 2rem; font-weight: 800; color: var(--blue-d); line-height: 1; }
+.story { font-size: 1.15rem; font-weight: 600; text-align: left; background: var(--blue-xl); border: 1px solid var(--line); border-radius: 14px; padding: 16px; margin: 14px 0; }
+.step-prompt { font-weight: 700; color: var(--blue-d); margin: 10px 0; }
+.worked { margin: 8px 0 12px; }
+
 @media (max-width: 520px) {
   .site-header { padding: 8px 10px; }
   .brand span { font-size: .95rem; }
