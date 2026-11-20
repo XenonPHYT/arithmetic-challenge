@@ -44,9 +44,56 @@
         <div class="example"><b>Add the tens first:</b> 47 + 38 = 47 + 30 + 8 = 77 + 8 = 85</div>
         <p>The order does not matter: 38 + 47 gives the same answer as 47 + 38.</p>`,
     },
-    sub: { op: 'sub', symbol: '\u2212', title: 'Subtraction', blurb: 'Taking away and finding the difference.', soon: true },
-    mul: { op: 'mul', symbol: '\u00d7', title: 'Multiplication', blurb: 'Equal groups and times tables.', soon: true },
-    div: { op: 'div', symbol: '\u00f7', title: 'Division', blurb: 'Sharing equally and grouping.', soon: true },
+    sub: {
+      op: 'sub', focus: 'borrow', symbol: '\u2212', title: 'Subtraction',
+      blurb: 'Taking away, finding what is left, and borrowing.',
+      tip: 'Subtract the ones first. If the top ones digit is smaller, borrow 10 from the tens.',
+      teach: `
+        <h2>What subtraction does</h2>
+        <p>Subtraction takes an amount away or finds the difference. Words like <b>left</b>, <b>remain</b>, <b>change</b>, <b>fewer</b> and <b>how many more</b> usually mean subtract.</p>
+        <h2>Subtract the ones, then the tens</h2>
+        <div class="example"><b>68 \u2212 25</b><br>Ones: 8 \u2212 5 = 3<br>Tens: 6 \u2212 2 = 4<br>Answer: <b>43</b></div>
+        <h2>Borrowing</h2>
+        <p>When the top ones digit is smaller than the bottom one, borrow 10 from the tens.</p>
+        <div class="example"><b>52 \u2212 27</b><br>Ones: 2 is smaller than 7, so borrow: 12 \u2212 7 = 5<br>Tens: 5 became 4, so 4 \u2212 2 = 2<br>Answer: <b>25</b></div>
+        <h2>Two shortcuts</h2>
+        <div class="example"><b>Count up:</b> for 52 \u2212 27, start at 27. Add 3 to reach 30, then 22 to reach 52. 3 + 22 = <b>25</b></div>
+        <div class="example"><b>Check by adding:</b> 25 + 27 = 52, so the answer is right.</div>
+        <p>Unlike addition, order matters: 52 \u2212 27 is not the same as 27 \u2212 52.</p>`,
+    },
+    mul: {
+      op: 'mul', focus: 'tables', noFocusAt: ['hard'], symbol: '\u00d7', title: 'Multiplication',
+      blurb: 'Equal groups and times tables.',
+      tip: 'Think of equal groups, or break one number apart: 12 \u00d7 4 = (10 \u00d7 4) + (2 \u00d7 4).',
+      teach: `
+        <h2>What multiplication does</h2>
+        <p>Multiplication is a fast way to add equal groups. Words like <b>each</b>, <b>every</b>, <b>rows of</b> and <b>times</b> usually mean multiply.</p>
+        <div class="example"><b>4 \u00d7 6</b> means 4 groups of 6<br>6 + 6 + 6 + 6 = <b>24</b></div>
+        <h2>Times table tricks</h2>
+        <div class="example"><b>\u00d7 10:</b> put a zero at the end. 7 \u00d7 10 = 70</div>
+        <div class="example"><b>\u00d7 5:</b> take half of \u00d7 10. 6 \u00d7 5 is half of 60 = 30</div>
+        <div class="example"><b>\u00d7 9:</b> take \u00d7 10 and subtract one group. 7 \u00d7 9 = 70 \u2212 7 = 63</div>
+        <h2>Break a number apart</h2>
+        <div class="example"><b>12 \u00d7 4</b><br>(10 \u00d7 4) + (2 \u00d7 4) = 40 + 8 = <b>48</b></div>
+        <p>Order does not matter: 4 \u00d7 6 gives the same answer as 6 \u00d7 4.</p>`,
+    },
+    div: {
+      op: 'div', focus: 'division_facts', noFocusAt: ['hard'], symbol: '\u00f7', title: 'Division',
+      blurb: 'Sharing equally and grouping.',
+      tip: 'Ask: what number times the divisor makes this number? Use the times table backward.',
+      teach: `
+        <h2>What division does</h2>
+        <p>Division shares an amount equally or finds how many groups fit. Words like <b>shared equally</b>, <b>each</b>, <b>per</b> and <b>how many groups</b> usually mean divide.</p>
+        <div class="example"><b>24 \u00f7 6</b><br>Share 24 equally among 6 groups: each group gets <b>4</b></div>
+        <h2>Division is multiplication backward</h2>
+        <p>Every multiplication fact has division facts that go with it.</p>
+        <div class="example"><b>6 \u00d7 4 = 24</b><br>so 24 \u00f7 6 = 4 and 24 \u00f7 4 = 6</div>
+        <h2>Finding the answer</h2>
+        <div class="example"><b>56 \u00f7 7</b><br>Ask: 7 times what is 56? 7 \u00d7 8 = 56, so the answer is <b>8</b></div>
+        <h2>Check by multiplying</h2>
+        <div class="example">8 \u00d7 7 = 56, so 56 \u00f7 7 = 8 is right.</div>
+        <p>In this game every division comes out exactly, with nothing left over. You cannot divide by 0.</p>`,
+    },
   };
 
   // ---------- Story templates ----------
@@ -74,7 +121,60 @@
     { id: 'jeep-stops', chain: ['sub', 'add'], link: 'first',
       story: (v) => `A jeepney has ${v.a} passengers. ${v.b} get off at the market, then ${v.c} more get on. How many passengers are on the jeepney now?`,
       prompts: [() => 'First, how many passengers are left after some get off?', () => 'Then add the new passengers. How many are on the jeepney now?'] },
+    // subtraction
+    { id: 'canteen', chain: ['sub'],
+      story: (v) => `You have ${v.a} pesos and spend ${v.b} pesos at the canteen. How many pesos are left?`,
+      prompts: [() => 'How many pesos are left?'] },
+    { id: 'seats', chain: ['sub'],
+      story: (v) => `A bus has ${v.a} seats and ${v.b} of them are taken. How many seats are free?`,
+      prompts: [() => 'How many seats are free?'] },
+    { id: 'mangoes', chain: ['sub'],
+      story: (v) => `Aling Nena had ${v.a} mangoes and sold ${v.b} of them. How many mangoes does she have left?`,
+      prompts: [() => 'How many mangoes are left?'] },
+    { id: 'pan-gift', chain: ['sub', 'sub'], link: 'first',
+      story: (v) => `Lola baked ${v.a} pan de sal. She gave away ${v.b}, then sold ${v.c}. How many pan de sal are left?`,
+      prompts: [() => 'First, how many are left after she gives some away?', () => 'Then take away the ones she sold. How many are left?'] },
+    { id: 'notebooks', chain: ['mul', 'sub'], link: 'second',
+      story: (v) => `You buy ${v.a} notebooks at ${v.b} pesos each and pay with ${v.c} pesos. How much change do you get?`,
+      prompts: [() => 'First, how much do the notebooks cost in all?', () => 'Then subtract the cost from what you paid. How much is the change?'] },
+    // multiplication
+    { id: 'trays', chain: ['mul'],
+      story: (v) => `A tray holds ${v.a} pan de sal. How many pan de sal are on ${v.b} trays?`,
+      prompts: [() => 'How many pan de sal in all?'] },
+    { id: 'chairs', chain: ['mul'],
+      story: (v) => `The hall has ${v.a} rows of chairs with ${v.b} chairs in each row. How many chairs are there?`,
+      prompts: [() => 'How many chairs are there?'] },
+    { id: 'rides', chain: ['mul'],
+      story: (v) => `Each jeepney ride costs ${v.a} pesos. How many pesos do ${v.b} rides cost?`,
+      prompts: [() => 'How many pesos do the rides cost?'] },
+    { id: 'bundles', chain: ['mul', 'mul'], link: 'first',
+      story: (v) => `A box holds ${v.a} pencils and a bundle has ${v.b} boxes. You buy ${v.c} bundles. How many pencils do you get?`,
+      prompts: [() => 'First, how many pencils are in one bundle?', () => 'Then multiply by the number of bundles. How many pencils in all?'] },
+    // division
+    { id: 'share-pencils', chain: ['div'],
+      story: (v) => `${v.a} pencils are shared equally among ${v.b} students. How many pencils does each student get?`,
+      prompts: [() => 'How many pencils does each student get?'] },
+    { id: 'mango-bags', chain: ['div'],
+      story: (v) => `${v.a} mangoes are packed ${v.b} to a bag. How many bags can be filled?`,
+      prompts: [() => 'How many bags can be filled?'] },
+    { id: 'ribbon', chain: ['div'],
+      story: (v) => `A ribbon ${v.a} cm long is cut into equal pieces that are ${v.b} cm long. How many pieces are there?`,
+      prompts: [() => 'How many pieces are there?'] },
+    { id: 'cupcakes', chain: ['mul', 'div'], link: 'first',
+      story: (v) => `Ana bakes ${v.b} trays of ${v.a} cupcakes. She shares them equally among ${v.c} friends. How many cupcakes does each friend get?`,
+      prompts: [() => 'First, how many cupcakes does she bake in all?', () => 'Then share them equally. How many does each friend get?'] },
+    { id: 'marble-share', chain: ['add', 'div'], link: 'first',
+      story: (v) => `Tomas has ${v.a} marbles and wins ${v.b} more. He shares all of them equally among ${v.c} friends. How many marbles does each friend get?`,
+      prompts: [() => 'First, how many marbles does Tomas have now?', () => 'Then share them equally. How many does each friend get?'] },
+    { id: 'bag-count', chain: ['div', 'add'], link: 'first',
+      story: (v) => `${v.a} pan de sal are packed ${v.b} to a bag. You already have ${v.c} bags. How many bags do you have in all?`,
+      prompts: [() => 'First, how many bags can be filled?', () => 'Then add the bags you already have. How many bags in all?'] },
   ];
+
+  /** The lesson's skill focus applies only to its own operation, and not on levels listed in noFocusAt. */
+  function focusFor(lesson, op, level) {
+    return op === lesson.op && lesson.focus && !(lesson.noFocusAt || []).includes(level) ? lesson.focus : null;
+  }
 
   /** Numbers allowed for the extra operand of step 2, given step 1's answer. */
   function extraChoices(op, link, r1) {
@@ -96,7 +196,10 @@
     const trivial = op === 'add' ? (a === 0 || b === 0) : op === 'sub' ? (b === 0 || answer === 0)
       : op === 'mul' ? (a <= 1 || b <= 1) : (a === 0 || b === 1 || answer === 1);
     if (trivial) return bad('TRIVIAL_QUESTION');
-    if (c.focus === 'carry' && !(a % 10 + b % 10 >= 10)) return bad('FOCUS_MISMATCH');
+    if (c.focus === 'carry' && !(a % 10 + b % 10 >= 10 || (Math.floor(a / 10) % 10) + (Math.floor(b / 10) % 10) >= 10)) return bad('FOCUS_MISMATCH');
+    if (c.focus === 'borrow' && !(a % 10 < b % 10)) return bad('FOCUS_MISMATCH');
+    if (c.focus === 'tables' && !(a >= 2 && a <= 12 && b >= 2 && b <= 12)) return bad('FOCUS_MISMATCH');
+    if (c.focus === 'division_facts' && !(b >= 2 && b <= 12)) return bad('FOCUS_MISMATCH');
     if ((recent || []).some((r) => r.op === op && ((r.a === a && r.b === b) || (op !== 'sub' && op !== 'div' && r.a === b && r.b === a)))) return bad('REPEATED_QUESTION');
     return { approved: true, reason: 'OK', score: 0, answer };
   }
@@ -119,7 +222,7 @@
     async function attempt(lesson, template, level, state) {
       const op1 = template.chain[0];
       const c1 = deps.engine.buildCandidate(level, op1);
-      const r1 = await check(state, c1, level, op1 === lesson.op ? lesson.focus : null);
+      const r1 = await check(state, c1, level, focusFor(lesson, op1, level));
       if (!r1.approved) return null;
       const steps = [{ op: op1, a: c1.a, b: c1.b, answer: c1.answer, score: r1.score || 0 }];
       const v = { a: c1.a, b: c1.b };
@@ -134,7 +237,7 @@
         const c = pick(near.length ? near : options);
         const [a2, b2] = template.link === 'first' ? [c1.answer, c] : [c, c1.answer];
         const c2 = { a: a2, op: op2, b: b2, answer: solveLocal(a2, op2, b2) };
-        const r2 = await check(state, c2, level, op2 === lesson.op ? lesson.focus : null);
+        const r2 = await check(state, c2, level, focusFor(lesson, op2, level));
         if (!r2.approved) return null;
         steps.push({ op: op2, a: a2, b: b2, answer: c2.answer, score: r2.score || 0 });
         v.c = c;
@@ -194,7 +297,7 @@
     }
   }
 
-  const api = { LESSONS, TEMPLATES, createGenerator, localEvaluate, adapt, extraChoices };
+  const api = { LESSONS, TEMPLATES, createGenerator, localEvaluate, adapt, extraChoices, focusFor };
   if (typeof module !== 'undefined' && module.exports) module.exports = api;
   if (typeof window === 'undefined') return;
 
