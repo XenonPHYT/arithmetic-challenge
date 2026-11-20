@@ -492,11 +492,13 @@
           ${guided ? '<button class="btn primary big" id="l-challenge">Try the challenge</button>' : '<button class="btn primary big" id="l-more">Practice more</button>'}
           <a class="btn big" href="#/play">Test what you learned</a>
         </div>
-        <p class="small"><a href="#/learn/${lesson.op}">Review the lesson</a> \u00b7 <a href="#/learn">All lessons</a></p>
+        <p class="small"><button class="link-btn" id="l-review" type="button">Review the lesson</button> \u00b7 <a href="#/learn">All lessons</a></p>
       </section>`);
     const ch = $('#l-challenge'); const more = $('#l-more');
     if (ch) ch.addEventListener('click', () => startPractice(lesson, 'challenge'));
     if (more) more.addEventListener('click', () => startPractice(lesson, 'challenge'));
+    // A link to the page's own address does nothing (the hash is unchanged), so this is a button.
+    $('#l-review').addEventListener('click', () => AC.learn.open(lesson.op));
   }
 
   AC.learn = {
