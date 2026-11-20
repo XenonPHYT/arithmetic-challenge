@@ -48,12 +48,12 @@
     const u = AC.state.user;
     const resume = u && (await AC.hasActiveGame());
     $('#nav').innerHTML = u
-      ? `<a href="#/play">${resume ? 'Resume game' : 'Play'}</a><a href="#/leaderboard">Leaderboard</a><a href="#/profile" class="nav-user">${AC.util.esc(u.displayName)}</a>`
-      : `<a href="#/leaderboard">Leaderboard</a><a href="#/login">Log in</a><a href="#/register" class="nav-cta">Sign up</a>`;
+      ? `<a href="#/play">${resume ? 'Resume game' : 'Play'}</a><a href="#/learn">Learn</a><a href="#/leaderboard">Leaderboard</a><a href="#/profile" class="nav-user">${AC.util.esc(u.displayName)}</a>`
+      : `<a href="#/learn">Learn</a><a href="#/leaderboard">Leaderboard</a><a href="#/login">Log in</a><a href="#/register" class="nav-cta">Sign up</a>`;
     const hero = $('#hero-actions');
     hero.innerHTML = u
-      ? '<a class="btn primary big" href="#/play">Play now</a><a class="btn big" href="#/leaderboard">Leaderboard</a>'
-      : '<a class="btn primary big" href="#/register">Get started</a><a class="btn big" href="#/login">Log in</a>';
+      ? '<a class="btn primary big" href="#/play">Play now</a><a class="btn big" href="#/learn">Learn</a><a class="btn big" href="#/leaderboard">Leaderboard</a>'
+      : '<a class="btn primary big" href="#/register">Get started</a><a class="btn big" href="#/login">Log in</a><a class="btn big" href="#/learn">Learn</a>';
   };
 
   function route() {
@@ -62,6 +62,7 @@
     const landing = $('#view-landing');
     const dyn = $('#view-dynamic');
     AC.game.leave();
+    AC.learn.leave();
     const isHome = path === '/' || path === '';
     landing.hidden = !isHome;
     dyn.hidden = isHome;
@@ -71,6 +72,7 @@
     if (path === '/register') return AC.state.user ? AC.navigate('#/play') : AC.webLogic.openRegister();
     if (path === '/profile') return AC.webLogic.openProfile();
     if (path === '/leaderboard') return AC.webLogic.openLeaderboard(new URLSearchParams(query || '').get('level'));
+    if (path === '/learn' || path.startsWith('/learn/')) return AC.learn.open(path.split('/')[2] || null);
     if (path === '/play') return AC.game.open();
     AC.navigate('#/');
   }
